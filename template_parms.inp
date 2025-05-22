@@ -1,0 +1,111 @@
+start parameters
+    nItr = 720000000
+    timeStep = 1
+
+    timeWrite = 2000
+    trajWrite = 500000000
+    pdbWrite = 10000
+    restartWrite = 500000
+    checkPoint = 500000
+    scaleMaxDisplace = 10.0
+    overlapSepLimit = 1.0
+    clusterOverlapCheck = true
+end parameters
+
+start boundaries
+    WaterBox = [1000,1000,1000]
+    xBCtype = reflect
+    yBCtype = reflect
+    zBCtype = reflect
+end boundaries
+
+start molecules
+    L : 18000 # ~30 uM equiv volume conc, approx 1% area frac
+    A : {A}
+    c1 : {c1}
+end molecules
+
+start reactions
+    #### A - L ####
+    A(bpip2) + L(head) <-> A(bpip2!1).L(head!1)
+    onRate3DMacro = 0.3 # (uM)^-1 s^-1
+    offRateMacro = {koffAL}
+    sigma = 1.0
+    norm1 = [1,0,0]
+    norm2 = [0,0,1]
+    assocAngles = [1.5708, 1.5708, M_PI, nan, M_PI]
+    observeLabel = ap2Mem
+
+    #### A - C1 ####
+    A(bc1,bpip2!*) + c1(t) <-> A(bc1!1,bpip2!*).c1(t!1)
+    onRate3DMacro = 1
+    offRateMacro = 10
+    sigma = 1.0
+    norm1 = [1,0,0]
+    norm2 = [0,0,1]
+    assocAngles = [1.5708, 1.5708, 1.0472, nan, M_PI]
+    
+    #### A - A ####
+    # self-binding allowed both in solution and on the membrane
+    A(bs1) + A(bs2) <-> A(bs1!1).A(bs2!1)
+    onRate3DMacro = {konAA_diff} # (uM)^-1 s^-1
+    offRateMacro = 10 # s^-1
+    norm1 = [0,0,1]
+    norm2 = [0,0,1]
+    sigma = 1.0
+    bindRadSameCom = 1.1
+    length3Dto2D = 10 # in nm (made this 1/3 of what is was for clathrin)
+    assocAngles = [M_PI,M_PI,nan,nan,0]
+
+    A(bs2) + A(bs3) <-> A(bs2!1).A(bs3!1)
+    onRate3DMacro = {konAA_diff} # (uM)^-1 s^-1
+    offRateMacro = 10 # s^-1
+    norm1 = [0,0,1]
+    norm2 = [0,0,1]
+    sigma = 1.0
+    bindRadSameCom = 1.1
+    length3Dto2D = 10 # in nm (made this 1/3 of what is was for clathrin)
+    assocAngles = [M_PI,M_PI,nan,nan,0]
+
+    A(bs1) + A(bs3) <-> A(bs1!1).A(bs3!1)
+    onRate3DMacro = {konAA_diff} # (uM)^-1 s^-1
+    offRateMacro = 10 # s^-1
+    norm1 = [0,0,1]
+    norm2 = [0,0,1]
+    sigma = 1.0
+    bindRadSameCom = 1.1
+    length3Dto2D = 10 # in nm (made this 1/3 of what is was for clathrin)
+    assocAngles = [M_PI,M_PI,nan,nan,0]
+
+    # same-site binding: rate related by factor of 2
+
+    A(bs1) + A(bs1) <-> A(bs1!1).A(bs1!1)
+    onRate3DMacro = {konAA} # (uM)^-1 s^-1
+    offRateMacro = 10 # s^-1
+    norm1 = [0,0,1]
+    norm2 = [0,0,1]
+    sigma = 1.0
+    bindRadSameCom = 1.1
+    length3Dto2D = 10 # in nm (made this 1/3 of what is was for clathrin)
+    assocAngles = [M_PI,M_PI,nan,nan,0]
+    
+    A(bs2) + A(bs2) <-> A(bs2!1).A(bs2!1)
+    onRate3DMacro = {konAA} # (uM)^-1 s^-1
+    offRateMacro = 10 # s^-1
+    norm1 = [0,0,1]
+    norm2 = [0,0,1]
+    sigma = 1.0
+    bindRadSameCom = 1.1
+    length3Dto2D = 10 # in nm (made this 1/3 of what is was for clathrin)
+    assocAngles = [M_PI,M_PI,nan,nan,0]
+
+    A(bs3) + A(bs3) <-> A(bs3!1).A(bs3!1)
+    onRate3DMacro = {konAA} # (uM)^-1 s^-1
+    offRateMacro = 10 # s^-1
+    norm1 = [0,0,1]
+    norm2 = [0,0,1]
+    sigma = 1.0
+    bindRadSameCom = 1.1
+    length3Dto2D = 10 # in nm (made this 1/3 of what is was for clathrin)
+    assocAngles = [M_PI,M_PI,nan,nan,0]    
+end reactions

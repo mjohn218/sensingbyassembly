@@ -1,0 +1,20 @@
+##
+# tfr molecule information file
+##
+
+Name    = c1
+isLipid = true # not really, but this will make it stick to the membrane
+checkOverlap = false
+
+# translational diffusion constants
+D = [1.0, 1.0, 0.0]
+
+# rotational diffusion constants
+Dr = [0, 0, 0]
+
+# Coordinates
+COM    0.0000    0.0000    0.0000
+t      0.0000    0.0000    2.0001
+
+bonds = 1
+com t
